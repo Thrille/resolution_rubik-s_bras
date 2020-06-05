@@ -36,11 +36,16 @@ pybullet.setRealTimeSimulation(0)
 steps = 400
 fixedTimeStep = 1.5 / steps
 
+#permet de selectionner quel joint on va utiliser (JointNumber)
 for jointNumber in range(6):
+    #permet d'effectuer les steps du mouvement
     for posJoint in range(0, steps+1):
+        #controle le joint choisis(robot est l'objet robot, jointNumber le joint choisis, je sais pas, déterminer l'angle effectuer grace au pos joints et au step)
         pybullet.setJointMotorControl2(robot, jointNumber, pybullet.POSITION_CONTROL, -posJoint/steps)
+        #effectue le mouvement
         pybullet.stepSimulation()
         time.sleep(fixedTimeStep)
+    #fait le mouvement précédent dans l'autre sens pour revenir à la position initiale
     for posJoint in reversed(range(0, steps+1)):
         pybullet.setJointMotorControl2(robot, jointNumber, pybullet.POSITION_CONTROL, -posJoint/steps)
         pybullet.stepSimulation()
