@@ -45,11 +45,11 @@ for jointNumber in range(6):
         pybullet.setJointMotorControl2(robot, jointNumber, pybullet.POSITION_CONTROL, -posJoint/steps)
         pybullet.stepSimulation()
         time.sleep(fixedTimeStep)
-    for posJoint in range(0, steps+1):
-        pybullet.setJointMotorControl2(robot, jointNumber, pybullet.POSITION_CONTROL, posJoint/steps)
-        pybullet.stepSimulation()
-        time.sleep(fixedTimeStep)
-    for posJoint in reversed(range(0, steps+1)):
-        pybullet.setJointMotorControl2(robot, jointNumber, pybullet.POSITION_CONTROL, posJoint/steps)
-        pybullet.stepSimulation()
-        time.sleep(fixedTimeStep)
+    #for posJoint in range(0, steps+1):
+    #    pybullet.setJointMotorControl2(robot, jointNumber, pybullet.POSITION_CONTROL, posJoint/steps)
+    #    pybullet.stepSimulation()
+    #    time.sleep(fixedTimeStep)
+    #for posJoint in reversed(range(0, steps+1)):
+    #    pybullet.setJointMotorControl2(robot, jointNumber, pybullet.POSITION_CONTROL, posJoint/steps)
+    #    pybullet.stepSimulation()
+    #    time.sleep(fixedTimeStep)
