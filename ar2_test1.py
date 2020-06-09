@@ -32,7 +32,8 @@ robot = pybullet.loadURDF("ar2/urdf/ar2.urdf", [0, 0, 0], useFixedBase=1)
 socle = pybullet.loadURDF("socle.urdf", [0, -0.5, 0], useFixedBase=1)
 
 # importation du cube
-cube = pybullet.loadURDF("cube.urdf", [0.05, -0.46, 0.11], useFixedBase=0)
+orientation = pybullet.getQuaternionFromEuler([73,0,0])
+cube = pybullet.loadURDF("cube.urdf", [0.05, -0.46, 0.11], orientation)
 
 
 pybullet.resetDebugVisualizerCamera(1.40, -53.0, -39.0, (0.53, 0.21, -0.24))
