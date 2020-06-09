@@ -29,7 +29,7 @@ os.system("git clone https://github.com/Chris-Annin/ROS_AR2_urdf.git ar2")
 robot = pybullet.loadURDF("ar2/urdf/ar2.urdf", [0, 0, 0], useFixedBase=1)
 
 # importation du socle
-# socle = pybullet.loadURDF("socle.urdf", [50, 0, 0], useFixedBase=1)
+socle = pybullet.loadURDF("socle.urdf", [0, -0.5, 0], useFixedBase=1)
 
 
 pybullet.resetDebugVisualizerCamera(1.40, -53.0, -39.0, (0.53, 0.21, -0.24))
