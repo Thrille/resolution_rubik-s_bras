@@ -28,12 +28,20 @@ pybuplane = pybullet.loadURDF("plane.urdf")
 
 #os.system("git clone https://github.com/Chris-Annin/ROS_AR2_urdf.git ar2")
 
+pybullet.setGravity(0,0,-9.8)
+
 # on récpère le bras robot depuiq le dossier git qu'on a récupéré
 # c'est important de lui mettre une useFixedBase à 1 pour qu'il ne tombe pas (avec la gravité par exemple)
 robot = pybullet.loadURDF("ar2/urdf/ar2.urdf", [0, 0, 0], useFixedBase=1)
 
 # importation du socle
-# socle = pybullet.loadURDF("socle.urdf", [50, 0, 0], useFixedBase=1)
+socle = pybullet.loadURDF("socle.urdf", [0, -0.5, 0], useFixedBase=1)
+
+
+# pour faire l'orientation du cub
+orientation = pybullet.getQuaternionFromEuler([73,0,0])
+# importation du cube
+cube = pybullet.loadURDF("cube.urdf", [0.05, -0.46, 0.11], orientation)
 
 
 pybullet.resetDebugVisualizerCamera(1.40, -53.0, -39.0, (0.53, 0.21, -0.24))

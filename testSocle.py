@@ -18,6 +18,6 @@ pybullet.setAdditionalSearchPath(pybullet_data.getDataPath())
 pybuplane = pybullet.loadURDF("plane.urdf")
 
 # importation du socle
-socle = pybullet.loadURDF("socle.urdf", [0, 0, 0], useFixedBase=1)
+socle = pybullet.loadURDF("cube.urdf", [0, 0, 0], useFixedBase=1)
 
 time.sleep(2000)
