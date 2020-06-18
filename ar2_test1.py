@@ -37,7 +37,7 @@ socle = pybullet.loadURDF("socle.urdf", [0, -0.5, 0], useFixedBase=1)
 # pour faire l'orientation du cub
 orientation = pybullet.getQuaternionFromEuler([73,0,0])
 # importation du cube
-cube = pybullet.loadURDF("cube.urdf", [0.05, -0.46, 0.11], orientation)
+cube = pybullet.loadURDF("cube.urdf", [0.0455, -0.46, 0.11], orientation)
 
 
 pybullet.resetDebugVisualizerCamera(1.40, -53.0, -39.0, (0.53, 0.21, -0.24))
