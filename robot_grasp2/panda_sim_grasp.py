@@ -33,14 +33,14 @@ class PandaSim(object):
         #self.bullet_client.loadURDF("tray/traybox.urdf", [0 + offset[0], 0 + offset[1], -0.6 + offset[2]],
         #                            [-0.5, -0.5, -0.5, 0.5], flags=flags)
         #self.cube = self.bullet_client.loadURDF("cube_small.urdf", np.array([0.05, 0.4, -0.7-0.025]) + self.offset, flags=flags)
-        self.socle = self.bullet_client.loadURDF("SocleRubiks.urdf", [0 + offset[0], 0 + offset[1], -0.6 + offset[2]], flags=flags)
+        self.socle = self.bullet_client.loadURDF("SocleRubiks.urdf", [0 + offset[0], 0 + offset[1], -0.6 + offset[2]],self.bullet_client.getQuaternionFromEuler([-math.pi/2, 0, 0]), flags=flags, useFixedBase=True)
         #self.socle = self.bullet_client.loadSDF("SocleRubiks.sdf")
         #self.bullet_client.resetBasePositionAndOrientation(self.socle[0], [0, 0, 0], self.bullet_client.getQuaternionFromEuler([0, 0, 0]))
         #self.noyau = self.bullet_client.loadURDF("noyau.urdf", np.array([0, 0.5, -0.7]) + self.offset, flags=flags)
         print("q=",self.bullet_client.getQuaternionFromEuler([-math.pi/4, 0, 0]))
         self.rubiks = self.bullet_client.loadURDF("../cube.urdf",
         #                                          [0 + offset[0] + 0.00001, 0.028575 + offset[1] + 0.02 + 0.03, - 0.6 + offset[2]],
-                                                  [0 + offset[0], 0 + offset[1], - 0.6 + offset[2]],
+                                                  [0 + offset[0], 0 + offset[1], - 1 + offset[2]],
                                                   flags=flags)
         #self.noyau = self.bullet_client.loadURDF("noyau.urdf", [0 + offset[0], 0 + offset[1], -0.6 + offset[2]], useFixedBase=True, flags=flags)
         #self.centre01 = self.bullet_client.loadURDF("centre01.urdf", [0 + offset[0], 0 + offset[1], -0.6 + offset[2]], useFixedBase=True, flags=flags)
