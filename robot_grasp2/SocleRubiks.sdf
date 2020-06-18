@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<sdf version="1.7">
+<model name="socle">
+
+  <link name="world"/>
+  
+  <link name="socle">
+    <pose>0 0 0 0 0 0</pose>
+    <visual name="socle_visual">
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <mesh>
+          <scale>0.001 0.001 0.001</scale>
+          <uri>SocleRubiks.stl</uri>
+        </mesh>
+      </geometry>
+      <material name="cyan">
+        <color rgba="0 1.0 1.0 1.0"/>
+      </material>
+    </visual>
+    <collision name="socle_collision">
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <mesh>
+          <scale>0.001 0.001 0.001</scale>
+          <uri>SocleRubiks.stl</uri>
+        </mesh>
+      </geometry>
+    </collision>
+  </link>
+    
+  <joint name="world_to_socle" type="floating">
+    <pose>0 0 0 -1.57 0 0</pose>
+    <parent>world</parent>
+    <child>socle</child>
+  </joint>
+</model>
+</sdf>
