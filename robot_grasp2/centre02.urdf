@@ -1,0 +1,23 @@
+<robot name="centre02">
+  <link name="centre02">
+    <contact>
+      <rolling_friction value="0.001"/>
+      <spinning_friction value="0.001"/>
+    </contact>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+		<mesh filename="centre02.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="cyan">
+        <color rgba="0 1.0 1.0 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+	    <mesh filename="centre02.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+    </link>
+</robot>
