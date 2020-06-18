@@ -40,7 +40,7 @@ class PandaSim(object):
         print("q=",self.bullet_client.getQuaternionFromEuler([-math.pi/4, 0, 0]))
         self.rubiks = self.bullet_client.loadURDF("../cube.urdf",
         #                                          [0 + offset[0] + 0.00001, 0.028575 + offset[1] + 0.02 + 0.03, - 0.6 + offset[2]],
-                                                  [0 + offset[0], 0 + offset[1], - 1 + offset[2]],
+                                                  [0 + offset[0], 0.1 + offset[1], - 0.6 + offset[2]],
                                                   flags=flags)
         #self.noyau = self.bullet_client.loadURDF("noyau.urdf", [0 + offset[0], 0 + offset[1], -0.6 + offset[2]], useFixedBase=True, flags=flags)
         #self.centre01 = self.bullet_client.loadURDF("centre01.urdf", [0 + offset[0], 0 + offset[1], -0.6 + offset[2]], useFixedBase=True, flags=flags)
