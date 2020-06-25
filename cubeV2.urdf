@@ -29,7 +29,7 @@
   </link>
 
   <joint name="base_to_right_leg" type="continuous">
-    <axis xyz="0 0 -1"/>
+    <axis xyz="0 -1 0"/>
     <parent link="base_cube"/>
     <child link="bout_cube"/>
     <origin xyz="0 -0.0305 0"/>
