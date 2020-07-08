@@ -198,13 +198,13 @@ class PandaSim(object):
             #baisse à la hauteur du cube
             if self.state == 9:
                 print("test9")
-                pos = [self.prev_pos[0], self.prev_pos[1] - 0.09/240, self.prev_pos[2]]
+                pos = [self.prev_pos[0], self.prev_pos[1] - 0.13/240, self.prev_pos[2]]
                 orn = self.prev_orn
                 self.prev_pos = pos
             #remonte
             if self.state == 10:
                 print("test10")
-                pos = [self.prev_pos[0], self.prev_pos[1] + 0.09/240, self.prev_pos[2]]
+                pos = [self.prev_pos[0], self.prev_pos[1] + 0.13/240, self.prev_pos[2]]
                 orn = self.prev_orn
                 self.prev_pos = pos
             #met la pince à l'horizontale
@@ -242,7 +242,7 @@ class PandaSim(object):
             for i in range(pandaNumDofs):
                 if i == 6:
                     if self.state == 11:
-                        self.bullet_client.setJointMotorControl2(self.panda, i, self.bullet_client.POSITION_CONTROL, math.pi / 4, force=5*240.)
+                        self.bullet_client.setJointMotorControl2(self.panda, i, self.bullet_client.POSITION_CONTROL, math.pi / 4, force=10)
                         pan = self.bullet_client.getBasePositionAndOrientation(self.panda)
                         print(pan)
                         ori = self.bullet_client.getEulerFromQuaternion(pan[1])
@@ -254,7 +254,7 @@ class PandaSim(object):
             # target for fingers
         for i in [9, 10]:
             self.bullet_client.setJointMotorControl2(self.panda, i, self.bullet_client.POSITION_CONTROL,
-                                                     self.finger_target, force=25)
+                                                     self.finger_target, force=1000)
         self.bullet_client.submitProfileTiming()
 
 
@@ -266,7 +266,7 @@ class PandaSimAuto(PandaSim):
         self.cur_state = 0
         rubiks = self.bullet_client.getBasePositionAndOrientation(self.rubiks)
 
-        self.prev_pos = [rubiks[0][0], rubiks[0][1] + 0.07, rubiks[0][2]]
+        self.prev_pos = [rubiks[0][0], rubiks[0][1] + 0.1, rubiks[0][2] + 0.01]
         self.prev_orn = self.bullet_client.getQuaternionFromEuler([3* math.pi/4 , 0, 0])
         #self.prev_orn_pince = 0 #0 pour verticale
         #self.nouv_orn_pince = 1 #1 pour horizontale
