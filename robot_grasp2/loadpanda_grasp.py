@@ -31,6 +31,7 @@ panda.bullet_client.submitProfileTiming("start")
 for i in range(100000):
     panda.bullet_client.submitProfileTiming("full_step")
     panda.step()
+    #panda.test()
     p.stepSimulation()
     if createVideo:
         p.configureDebugVisualizer(p.COV_ENABLE_SINGLE_STEP_RENDERING, 1)
@@ -39,4 +40,3 @@ for i in range(100000):
     panda.bullet_client.submitProfileTiming()
 panda.bullet_client.submitProfileTiming()
 panda.bullet_client.stopStateLogging(logId)
-

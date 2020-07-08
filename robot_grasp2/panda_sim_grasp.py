@@ -64,6 +64,7 @@ class PandaSim(object):
         self.control_dt = 1. / 240.
         self.finger_target = 0
         self.gripper_height = 0.2
+        self.target_pos = []
         # create a constraint to keep the fingers centered
         c = self.bullet_client.createConstraint(self.panda,
                                                 9,
@@ -88,6 +89,19 @@ class PandaSim(object):
                 self.bullet_client.resetJointState(self.panda, j, jointPositions[index])
                 index = index + 1
         self.t = 0.
+        rubiks = self.bullet_client.getBasePositionAndOrientation(self.rubiks)
+        self.target_pos = [rubiks[0][0], rubiks[0][1], rubiks[0][2]]
+        self.steps = 400
+        self.fixedTimeStep = 1.5 / self.steps
+        print(rubiks)
+        print(rubiks[0])
+        print(rubiks[1])
+        print(rubiks[0][0])
+        print(rubiks[0][1])
+        print(rubiks[0][2])
+        print(self.target_pos)
+        #print(rubiks(0))
+        #print(rubiks(1))
 
     def reset(self):
         pass
@@ -111,19 +125,47 @@ class PandaSim(object):
                         self.state = 1  # Circle down
                 if v & self.bullet_client.KEY_WAS_RELEASED:
                     self.state = 0
+        self.state = 20
         #print("state=", self.state)
 
+    def test(self):
+        for jointNumber in range(self.bullet_client.getNumJoints(self.panda)):
+            for posJoint in range(0, self.steps+1):
+                self.bullet_client.setJointMotorControl2(self.panda, jointNumber, self.bullet_client.POSITION_CONTROL, -posJoint/self.steps)
+                self.bullet_client.stepSimulation()
+                time.sleep(self.fixedTimeStep)
+            for posJoint in reversed(range(0, self.steps+1)):
+                self.bullet_client.setJointMotorControl2(self.panda, jointNumber, self.bullet_client.POSITION_CONTROL, -posJoint/self.steps)
+                self.bullet_client.stepSimulation()
+                time.sleep(self.fixedTimeStep)
+            for posJoint in range(0, self.steps+1):
+                self.bullet_client.setJointMotorControl2(self.panda, jointNumber, self.bullet_client.POSITION_CONTROL, posJoint/self.steps)
+                self.bullet_client.stepSimulation()
+                time.sleep(self.fixedTimeStep)
+            for posJoint in reversed(range(0, self.steps+1)):
+                self.bullet_client.setJointMotorControl2(self.panda, jointNumber, self.bullet_client.POSITION_CONTROL, posJoint/self.steps)
+                self.bullet_client.stepSimulation()
+                time.sleep(self.fixedTimeStep)
+
     def step(self):
+
+        print("test1")
         if self.state == 6:
-            self.finger_target = 0.01
+            self.finger_target = 0.005
         if self.state == 5:
             self.finger_target = 0.04
         self.bullet_client.submitProfileTiming("step")
-        self.update_state()
         #print("self.state=",self.state)
         #print("self.finger_target=",self.finger_target)
         alpha = 0.9  # 0.99
-        if self.state == 1 or self.state == 2 or self.state == 3 or self.state == 4 or self.state == 7:
+        self.update_state()
+        print("test2")
+        print(self.state)
+        if self.state == 0:
+            panda = self.bullet_client.getBasePositionAndOrientation(self.rubiks)
+            posb = [panda[0][0], panda[0][1], panda[0][2]]
+            #self.prev_pos = posb
+        if self.state == 1 or self.state == 2 or self.state == 3 or self.state == 4 or self.state == 7 or self.state == 8 or self.state == 9 or self.state == 10 or self.state == 11 or self.state == 12:
             # gripper_height = 0.034
             self.gripper_height = alpha * self.gripper_height + (1. - alpha) * 0.03
             if self.state == 2 or self.state == 3 or self.state == 7:
@@ -131,10 +173,11 @@ class PandaSim(object):
 
             t = self.t
             self.t += self.control_dt
-            pos = [self.offset[0] + 0.2 * math.sin(1.5 * t), self.offset[1] + self.gripper_height,
-                   self.offset[2] + -0.6 + 0.1 * math.cos(1.5 * t)]
+            #pos = [self.offset[0] + 0.2 * math.sin(1.5 * t), self.offset[1] + self.gripper_height,
+                   #self.offset[2] + -0.6 + 0.1 * math.cos(1.5 * t)]
+            #orn = self.bullet_client.getQuaternionFromEuler([3 * math.pi / 4 , 0., 0.])
             if self.state == 3 or self.state == 4:
-                pos, o = self.bullet_client.getBasePositionAndOrientation(self.cube)
+                pos, o = self.bullet_client.getBasePositionAndOrientation(self.rubiks)
                 pos = [pos[0], self.gripper_height, pos[2]]
                 self.prev_pos = pos
             if self.state == 7:
@@ -142,31 +185,100 @@ class PandaSim(object):
                 diffX = pos[0] - self.offset[0]
                 diffZ = pos[2] - (self.offset[2] - 0.6)
                 self.prev_pos = [self.prev_pos[0] - diffX * 0.1, self.prev_pos[1], self.prev_pos[2] - diffZ * 0.1]
+            #première position
+            if self.state == 8:
+                print("test3")
+                rubiks = self.bullet_client.getBasePositionAndOrientation(self.panda)
+                print(rubiks)
+                ora = self.bullet_client.getEulerFromQuaternion(rubiks[1])
+                print(ora)
+                print(self.prev_pos)
+                pos = self.prev_pos
+                orn = self.prev_orn
+            #baisse à la hauteur du cube
+            if self.state == 9:
+                print("test9")
+                pos = [self.prev_pos[0], self.prev_pos[1] - 0.09/240, self.prev_pos[2]]
+                orn = self.prev_orn
+                self.prev_pos = pos
+            #remonte
+            if self.state == 10:
+                print("test10")
+                pos = [self.prev_pos[0], self.prev_pos[1] + 0.09/240, self.prev_pos[2]]
+                orn = self.prev_orn
+                self.prev_pos = pos
+            #met la pince à l'horizontale
+            if self.state == 11:
+                print("test11")
+                pos = self.prev_pos
+                orn = [self.prev_orn[0], self.prev_orn[1], self.prev_orn[2]]
+            #    self.prev_orn = orn
+            #    self.nouv_orn_pince = 1
+            #à l'horizontale dans l'autre sens
+            if self.state == 12:
+                print("test12")
+                pos = self.prev_pos
+                orn = [self.prev_orn[0], self.prev_orn[1], self.prev_orn[2]]
+            #    self.prev_orn = orn
+            #    self.nouv_orn_pince = 0
 
-            orn = self.bullet_client.getQuaternionFromEuler([math.pi / 2., 0., 0.])
             self.bullet_client.submitProfileTiming("IK")
-            jointPoses = self.bullet_client.calculateInverseKinematics(self.panda, pandaEndEffectorIndex, pos, orn, ll,
-                                                                       ul,
-                                                                       jr, rp, maxNumIterations=20)
+            if self.state == 9 or self.state == 10:
+                print(pos)
+                jointPoses = self.bullet_client.calculateInverseKinematics(bodyUniqueId=self.panda,
+                                                                            endEffectorLinkIndex=pandaEndEffectorIndex,
+                                                                            targetPosition=pos,
+                                                                            lowerLimits=ll,
+                                                                            upperLimits=ul,
+                                                                            jointRanges=jr,
+                                                                            restPoses=rp,
+                                                                            maxNumIterations=20)
+                self.prev_pos = pos
+            else:
+                jointPoses = self.bullet_client.calculateInverseKinematics(self.panda, pandaEndEffectorIndex, pos, orn, ll,
+                                                                            ul, jr, rp, maxNumIterations=20)
+
             self.bullet_client.submitProfileTiming()
             for i in range(pandaNumDofs):
-                self.bullet_client.setJointMotorControl2(self.panda, i, self.bullet_client.POSITION_CONTROL,
-                                                         jointPoses[i], force=5 * 240.)
+                if i == 6:
+                    if self.state == 11:
+                        self.bullet_client.setJointMotorControl2(self.panda, i, self.bullet_client.POSITION_CONTROL, math.pi / 4, force=5*240.)
+                        pan = self.bullet_client.getBasePositionAndOrientation(self.panda)
+                        print(pan)
+                        ori = self.bullet_client.getEulerFromQuaternion(pan[1])
+                        print(ori)
+                    elif self.state == 12:
+                        self.bullet_client.setJointMotorControl2(self.panda, i, self.bullet_client.POSITION_CONTROL, 3 * math.pi / 4, force=5 * 240.)
+                else:
+                    self.bullet_client.setJointMotorControl2(self.panda, i, self.bullet_client.POSITION_CONTROL, jointPoses[i], force=5 * 240.)
             # target for fingers
         for i in [9, 10]:
             self.bullet_client.setJointMotorControl2(self.panda, i, self.bullet_client.POSITION_CONTROL,
-                                                     self.finger_target, force=10)
+                                                     self.finger_target, force=25)
         self.bullet_client.submitProfileTiming()
 
 
 class PandaSimAuto(PandaSim):
     def __init__(self, bullet_client, offset):
         PandaSim.__init__(self, bullet_client, offset)
+
         self.state_t = 0
         self.cur_state = 0
-        self.states = [0, 3, 5, 4, 6, 3, 7]
-        self.state_durations = [1, 1, 1, 2, 1, 1, 2]
-'''
+        rubiks = self.bullet_client.getBasePositionAndOrientation(self.rubiks)
+
+        self.prev_pos = [rubiks[0][0], rubiks[0][1] + 0.07, rubiks[0][2]]
+        self.prev_orn = self.bullet_client.getQuaternionFromEuler([3* math.pi/4 , 0, 0])
+        #self.prev_orn_pince = 0 #0 pour verticale
+        #self.nouv_orn_pince = 1 #1 pour horizontale
+        #self.states = [0, 3, 5, 4, 6, 3, 7]
+        #self.state_durations = [1, 1, 1, 2, 1, 1, 2]
+
+        #self.states = [0, 8, 5, 9, 6, 10, 12, 9, 5, 10]
+        #self.state_durations = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+
+        self.states = [0, 8, 11, 5, 9, 6, 10, 12, 9, 5, 10, 11]
+        self.state_durations = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+
     def update_state(self):
         self.state_t += self.control_dt
         if self.state_t > self.state_durations[self.cur_state]:
@@ -174,6 +286,6 @@ class PandaSimAuto(PandaSim):
             if self.cur_state >= len(self.states):
                 self.cur_state = 0
             self.state_t = 0
+            self.t = 0
             self.state = self.states[self.cur_state]
             # print("self.state=",self.state)
-'''
