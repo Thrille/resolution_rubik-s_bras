@@ -1,0 +1,40 @@
+<robot name="cube">
+  <link name="base_cube">
+      <visual>
+        <geometry>
+            <box size="0.06 0.04 0.06"/>
+        </geometry>
+      </visual>
+       <collision>
+      <geometry>
+                 <box size="0.06 0.04 0.06"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="bout_cube">
+      <visual>
+        <geometry>
+            <box size="0.06 0.02 0.06"/>
+        </geometry>
+        <material name="pink">
+          <color rgba="1.0 0.5 1.0 1.0"/>
+        </material>
+      </visual>
+       <collision>
+      <geometry>
+                 <box size="0.06 0.02 0.02"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="base_to_right_leg" type="continuous">
+    <axis xyz="0 -1 0"/>
+    <parent link="base_cube"/>
+    <child link="bout_cube"/>
+    <origin xyz="0 -0.0305 0"/>
+    <limit effort="100" velocity="100"/>
+    <joint_properties damping="0.0" friction="0.0"/>
+  </joint>
+
+</robot>
